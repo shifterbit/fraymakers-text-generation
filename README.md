@@ -3,6 +3,7 @@
 [Download the required files](https://github.com/shifterbit/fraymakers-text-generation/releases/tag/1.0)
 - Add `dumProj.entity` and `text.entity` to your entity folder
 - add `empty.png` and `empty.png.meta`   to wherever you put your sprites in your project, make sure they're right next to each other
+- add base.png and base.png.meta to wherever you put your sprites in your project, make sure they're right next to each other
 - extract  the contents of `font.zip` into wherever you put your sprites in your project
 - extract the contents of `dummyProj.zip` into its own subfolder within your scripts folder in your project
 
