@@ -241,7 +241,7 @@ function renderText(
             return true;
         }, []);
 
-        return { sprites: sprites, duration: -1 };
+        return { sprites: sprites, duration: 0 };
     }
 }
 
@@ -308,6 +308,35 @@ var renderData = renderLines(["This will be the first line", "This will be the s
                             });
 ```
 
+## Erasing Text
+Erasing text works as follows
+```haxe
+Engine.forEach(sprites, function (sprite: Sprite, _idx: Int) {
+        sprite.dispose();
+        return true;
+    }, []);
+```
+### Erasing text after rendering
+Howerver if you want to erase text a certain time after it has rendered you can make use of timer as well as use the data returned by `renderLines` or `renderText`
+like so:
+```haxe
+var renderData = renderLines(["This will be the first line", "This will be the second line", "This is line three!"],
+                            textSprites, camera.getForegroundContainer(),
+                            {
+                              x: camera.getViewportWidth() / 2,
+                              y: camera.getViewportHeight() / 2,
+                              delay: 3,
+                            });
+
+globalDummy.addTimer(renderData.duration + 90, 1, function () {
+        Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
+            sprite.dispose();
+            return true;
+        }, []);
+    }, { persistent: true });
+
+```
+This will erase the text 90 frames after it has been completely rendered.
 ## Text Formatting syntax and Newlines
 The text render also supports basic color formatting via hex codes, and the syntax works as follows:
 ```
