@@ -1,7 +1,8 @@
 # fraymakers-text-generation
 ## Prerequisites
 A projectile entity, with no hitboxes or hurtboxes, and an empty sprite for the animation frames(basically it should be invisible and not interactable)
-Font Sprites and Entity.
+Font Sprites and Entity. [Downloadable here](https://github.com/shifterbit/fraymakers-text-generation/releases/tag/1.0)
+
 
 ## The Code
 At the in your script file add the following variable, make sure it is outside any functons such as `initialize()`, `update()` `onTeardown()` etc
