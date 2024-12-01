@@ -1,7 +1,25 @@
 # fraymakers-text-generation
-## Prerequisites
-A projectile entity, with no hitboxes or hurtboxes, and an empty sprite for the animation frames(basically it should be invisible and not interactable)
-Font Sprites and Entity. [Downloadable here](https://github.com/shifterbit/fraymakers-text-generation/releases/tag/1.0)
+## Prerequisites - PLEASE READ
+[Download the required files](https://github.com/shifterbit/fraymakers-text-generation/releases/tag/1.0)
+- Add `dumProj.entity` and `text.entity` to your entity folder
+- add `empty.png` and `empty.png.meta`   to wherever you put your sprites in your project, make sure they're right next to each other
+- extract  the contents of `font.zip` into wherever you put your sprites in your project
+- extract the contents of `dummyProj.zip` into its own subfolder within your scripts folder in your project
+
+And finally, ensure the following entry exists within your manifest file
+```json
+    {
+      "id": "dummyProj",
+      "type": "projectile",
+      "objectStatsId": "dummyProjStats",
+      "animationStatsId": "dummyProjAnimationStats",
+      "hitboxStatsId": "dummyProjHitboxStats",
+      "scriptId": "dummyProjScript",
+      "costumesId": "assisttemplateCostumes"
+    },
+  ```
+
+
 
 
 ## The Code
