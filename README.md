@@ -356,6 +356,35 @@ globalDummy.addTimer(renderData.duration + 90, 1, function () {
     }, { persistent: true });
 
 ```
+
+## Displaying Text on top of a vfx
+```haxe
+var sprites: Array<Sprite> = [];
+var vfx: Vfx = match.createVfx(new VfxStats({
+        x: camera.getViewportWidth() / 2,
+        y: camera.getViewportHeight() / 2,
+        spriteContent: self.getResource().getContent("text"),
+        animation: "base",
+        loop: true
+ }), null);
+vfx.setX(vfx.getX() - vfx.getSprite().width / 2); // This ensures the textbos is in the middle
+camera.getForegroundContainer().addChildAt(vfx.getViewRootContainer(), 0);
+var renderData = renderText(mission, sprites, vfx.getViewRootContainer(), {
+        delay: 3, autoLinewrap: 40,
+        x: 0, y: 0
+    });
+sprites = renderData.sprites;
+globalDummy.addTimer(renderData.duration + 90, 1, function () {
+        Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
+            sprite.dispose();
+            return true;
+        }, []);
+        vfx.dispose();
+        vfx.kill();
+  }, { persistent: true });
+
+
+```
 This will erase the text 90 frames after it has been completely rendered.
 ## Text Formatting syntax and Newlines
 The text render also supports basic color formatting via hex codes, and the syntax works as follows:
