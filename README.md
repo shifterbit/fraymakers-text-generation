@@ -1,36 +1,20 @@
 # fraymakers-text-generation
 ## Prerequisites - PLEASE READ
 [Download the required files](https://github.com/shifterbit/fraymakers-text-generation/releases/tag/1.0)
-- Add `dumProj.entity` and `text.entity` to your entity folder
-- add `empty.png` and `empty.png.meta`   to wherever you put your sprites in your project, make sure they're right next to each other
-- add base.png and base.png.meta to wherever you put your sprites in your project, make sure they're right next to each other
+- Add `text.entity` to your entity folder
 - extract  the contents of `font.zip` into wherever you put your sprites in your project
-- extract the contents of `dummyProj.zip` into its own subfolder within your scripts folder in your project
-
-And finally, ensure the following entry exists within your manifest file
-```json
-    {
-      "id": "dummyProj",
-      "type": "projectile",
-      "objectStatsId": "dummyProjStats",
-      "animationStatsId": "dummyProjAnimationStats",
-      "hitboxStatsId": "dummyProjHitboxStats",
-      "scriptId": "dummyProjScript",
-      "costumesId": "assisttemplateCostumes"
-    },
-  ```
-
-
 
 
 ## The Code
-At the in your script file add the following variable, make sure it is outside any functons such as `initialize()`, `update()` `onTeardown()` etc
-
 ```haxe
-var globalDummy: Projectile = null;
-```
+function disposeSprites(textSprites: Array<Sprite>) {
+    Engine.forEach(textSprites, function (sprite: Sprite, idx: Int) {
+        sprite.dispose();
+        return true;
+    }, []);
+    textSprites = [];
+}
 
-```haxe
 function createSpriteFromCharacter(char: String): Sprite {
     var res = getContent("text");
     var lowerCase = "abcdefghijklmnopqrstuvwxyz";
@@ -241,14 +225,10 @@ function renderText(
         return true;
     }, []);
 
-    if (globalDummy == null) {
-        var dummy: Projectile = match.createProjectile(getContent("dummyProj"), null);
-        globalDummy = dummy;
-    }
     
     if (options.delay != null && options.delay > 0) {
         Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
-            globalDummy.addTimer(idx * options.delay, 1, function () {
+            self.addTimer(idx * options.delay, 1, function () {
                 container.addChild(sprite);
             }, { persistent: true });
             return true;
@@ -331,32 +311,8 @@ var renderData = renderLines(["This will be the first line", "This will be the s
 ## Erasing Text
 Erasing text works as follows
 ```haxe
-Engine.forEach(sprites, function (sprite: Sprite, _idx: Int) {
-        sprite.dispose();
-        return true;
-    }, []);
+disposeSprites(renderData.sprites);
 ```
-### Erasing text after rendering
-Howerver if you want to erase text a certain time after it has rendered you can make use of timer as well as use the data returned by `renderLines` or `renderText`
-like so:
-```haxe
-var renderData = renderLines(["This will be the first line", "This will be the second line", "This is line three!"],
-                            textSprites, camera.getForegroundContainer(),
-                            {
-                              x: camera.getViewportWidth() / 2,
-                              y: camera.getViewportHeight() / 2,
-                              delay: 3,
-                            });
-
-globalDummy.addTimer(renderData.duration + 90, 1, function () {
-        Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
-            sprite.dispose();
-            return true;
-        }, []);
-    }, { persistent: true });
-
-```
-This will erase the text 90 frames after it has been completely rendered.
 
 ## Displaying Text on top of a vfx
 ```haxe
@@ -374,16 +330,6 @@ var renderData = renderText(mission, sprites, vfx.getViewRootContainer(), {
         delay: 3, autoLinewrap: 40,
         x: 0, y: 0
     });
-sprites = renderData.sprites;
-globalDummy.addTimer(renderData.duration + 90, 1, function () {
-        Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
-            sprite.dispose();
-            return true;
-        }, []);
-        vfx.dispose();
-        vfx.kill();
-  }, { persistent: true });
-
 ```
 For reference, this is where text would start rendering relative to the vfx
 ![image](https://github.com/user-attachments/assets/365030a6-f2fb-4eb4-ae57-37dc05c9d5f0)
