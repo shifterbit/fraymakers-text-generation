@@ -1,4 +1,4 @@
-# fraymakers-text-generatoin
+# fraymakers-text-generation
 ## Prerequisites
 A projectile entity, with no hitboxes or hurtboxes, and an empty sprite for the animation frames(basically it should be invisible and not interactable)
 Font Sprites and Entity.
