@@ -356,6 +356,7 @@ globalDummy.addTimer(renderData.duration + 90, 1, function () {
     }, { persistent: true });
 
 ```
+This will erase the text 90 frames after it has been completely rendered.
 
 ## Displaying Text on top of a vfx
 ```haxe
@@ -383,9 +384,10 @@ globalDummy.addTimer(renderData.duration + 90, 1, function () {
         vfx.kill();
   }, { persistent: true });
 
-
 ```
-This will erase the text 90 frames after it has been completely rendered.
+For reference, this is where text would start rendering relative to the vfx
+![image](https://github.com/user-attachments/assets/365030a6-f2fb-4eb4-ae57-37dc05c9d5f0)
+
 ## Text Formatting syntax and Newlines
 The text render also supports basic color formatting via hex codes, and the syntax works as follows:
 ```
