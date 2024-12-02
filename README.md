@@ -176,13 +176,10 @@ function renderText(
     text: String,
     sprites: Array<Sprite>,
     container: Container,
-    options: { autoLinewrap: Int, delay: Int, x: Int, y: Int }
+    options: { autoLinewrap: Int, delay: Int, x: Int, y: Int, owner: Entity }
 ): { duration: Int, sprites: Array<Sprite> } {
     var parsed: Array<{ text: String, color: Float, error: Boolean, length: number }> = parseText(text);
-    Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
-        sprite.dispose();
-        return true;
-    }, []);
+    disposeSprites(sprites);
 
     sprites = [];
     var line = 0;
@@ -225,10 +222,14 @@ function renderText(
         return true;
     }, []);
 
-    
+    var owner = self;
+    if (options.owner != null) {
+        owner = options.owner;
+    }
+
     if (options.delay != null && options.delay > 0) {
         Engine.forEach(sprites, function (sprite: Sprite, idx: Int) {
-            self.addTimer(idx * options.delay, 1, function () {
+            owner.addTimer(idx * options.delay, 1, function () {
                 container.addChild(sprite);
             }, { persistent: true });
             return true;
@@ -241,15 +242,15 @@ function renderText(
             return true;
         }, []);
 
-        return { sprites: sprites, duration: 0 };
+        return { sprites: sprites, duration: -1 };
     }
 }
 
 function renderLines(lines: Array<String>,
     sprites: Array<Sprite>,
     container: Container,
-    options: { delay: Int, x: Int, y: Int }): { duration: Int, sprites: Array<Sprite> } {
-    var renderData = renderText(lines.join("\n"), sprites, container, { autoLinewrap: false, delay: delay, x: options.x, y: options.y });
+    options: { delay: Int, x: Int, y: Int }): { duration: Int, sprites: Array<Sprite>, owner: Entity } {
+    var renderData = renderText(lines.join("\n"), sprites, container, { autoLinewrap: false, delay: delay, x: options.x, y: options.y, owner: options.owner });
     return renderData;
 }
 ```
